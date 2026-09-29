@@ -482,7 +482,10 @@ def _get_pin_from_request():
     pin = (
         request.headers.get("X-Admin-Pin")
         or request.form.get("pin")
+        or request.form.get("password")
+        or request.form.get("admin_password")
         or request.args.get("pin")
+        or request.args.get("password")
     )
 
     if not pin:
@@ -490,7 +493,7 @@ def _get_pin_from_request():
 
         if "json" in ct:
             data = request.get_json(silent=True) or {}
-            pin = data.get("pin")
+            pin = data.get("pin") or data.get("password") or data.get("admin_password")
 
     return pin or ""
 
